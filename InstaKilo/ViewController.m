@@ -52,9 +52,7 @@ typedef enum {
 }
 
 -(void)viewWillAppear:(BOOL)animated {
-
-    
-    [self.collectionView reloadData];
+    //[self.collectionView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -122,7 +120,7 @@ typedef enum {
             }
         }
         
-        [self.photosForSectionHeader setObject:photosInSection forKey:sectionHeader];
+        [self.photosForSectionHeader setObject:[NSArray arrayWithArray:photosInSection] forKey:[NSString stringWithString:sectionHeader]];
     }
     
     
