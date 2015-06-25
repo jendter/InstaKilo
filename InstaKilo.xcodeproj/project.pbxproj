@@ -14,6 +14,8 @@
 		27C20BB31B3C55980026B8E1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27C20BB21B3C55980026B8E1 /* Images.xcassets */; };
 		27C20BB61B3C55980026B8E1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27C20BB41B3C55980026B8E1 /* LaunchScreen.xib */; };
 		27C20BC21B3C55980026B8E1 /* InstaKiloTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C20BC11B3C55980026B8E1 /* InstaKiloTests.m */; };
+		27C20BCD1B3C567A0026B8E1 /* PhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C20BCC1B3C567A0026B8E1 /* PhotoCollectionViewCell.m */; };
+		27C20BD01B3C6BA80026B8E1 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C20BCF1B3C6BA80026B8E1 /* Photo.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,10 @@
 		27C20BBB1B3C55980026B8E1 /* InstaKiloTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InstaKiloTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		27C20BC01B3C55980026B8E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		27C20BC11B3C55980026B8E1 /* InstaKiloTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstaKiloTests.m; sourceTree = "<group>"; };
+		27C20BCB1B3C567A0026B8E1 /* PhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCollectionViewCell.h; sourceTree = "<group>"; };
+		27C20BCC1B3C567A0026B8E1 /* PhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoCollectionViewCell.m; sourceTree = "<group>"; };
+		27C20BCE1B3C6BA80026B8E1 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
+		27C20BCF1B3C6BA80026B8E1 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,7 +91,11 @@
 				27C20BAA1B3C55980026B8E1 /* AppDelegate.m */,
 				27C20BAC1B3C55980026B8E1 /* ViewController.h */,
 				27C20BAD1B3C55980026B8E1 /* ViewController.m */,
+				27C20BCE1B3C6BA80026B8E1 /* Photo.h */,
+				27C20BCF1B3C6BA80026B8E1 /* Photo.m */,
 				27C20BAF1B3C55980026B8E1 /* Main.storyboard */,
+				27C20BCB1B3C567A0026B8E1 /* PhotoCollectionViewCell.h */,
+				27C20BCC1B3C567A0026B8E1 /* PhotoCollectionViewCell.m */,
 				27C20BB21B3C55980026B8E1 /* Images.xcassets */,
 				27C20BB41B3C55980026B8E1 /* LaunchScreen.xib */,
 				27C20BA51B3C55980026B8E1 /* Supporting Files */,
@@ -220,7 +230,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				27C20BAE1B3C55980026B8E1 /* ViewController.m in Sources */,
+				27C20BCD1B3C567A0026B8E1 /* PhotoCollectionViewCell.m in Sources */,
 				27C20BAB1B3C55980026B8E1 /* AppDelegate.m in Sources */,
+				27C20BD01B3C6BA80026B8E1 /* Photo.m in Sources */,
 				27C20BA81B3C55980026B8E1 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
