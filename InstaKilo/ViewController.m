@@ -25,7 +25,8 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @property (nonatomic, strong) NSArray *photos;
-@property (nonatomic, strong) NSMutableArray *sections;
+@property (nonatomic, strong) NSMutableArray *sectionHeaders;
+@property (nonatomic, strong) NSMutableDictionary *photosForSectionHeader;
 
 @property (nonatomic) PhotoSort photoSort; // How the photos are currently sorted on screen (either by subject or location)
 
@@ -40,15 +41,155 @@ typedef enum {
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+
+     self.photoSort = PhotoSortSubject; // DEBUGGING HARDCODE
     
-    [self updatePhotoSort:self];
+    [self loadSamplePhotos];
     
-    // TODO: Seperate out into new method (setupPhotoData:)
+    [self updatePhotoData];
+    
+    
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+
+    
+    [self.collectionView reloadData];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+#pragma mark - Actions
+
+- (IBAction)updatePhotoSort:(id)sender {
+    if (self.photoSortSegmentedControl.selectedSegmentIndex == 0) {
+        self.photoSort = PhotoSortSubject;
+    } else if (self.photoSortSegmentedControl.selectedSegmentIndex == 1) {
+        self.photoSort = PhotoSortLocation;
+    }
+    
+    [self updatePhotoData];
+
+    [self.collectionView reloadData];
+}
+
+//-(void)updatePhotoDataForPhotoSort:(PhotoSort)photoSort {
+//    
+//}
+
+-(void)updatePhotoData {
+    
+    // Get the section headers
+    self.sectionHeaders = [NSMutableArray new];
+    for (Photo *photo in self.photos) {
+        
+        NSString *sectionName;
+        
+        if (self.photoSort == PhotoSortSubject) {
+            sectionName = photo.subject;
+        } else if (self.photoSort == PhotoSortLocation) {
+            sectionName = photo.location;
+        }
+        
+        if (![self.sectionHeaders containsObject:sectionName]) {
+            // The section is not yet recorded in the array
+            [self.sectionHeaders addObject:sectionName];
+        }
+    }
+    
+    // Put the photos into the dictionary based on the key of the section name
+    self.photosForSectionHeader = [NSMutableDictionary new];
+    
+    for (NSString *sectionHeader in self.sectionHeaders) {
+        // For each section header
+        
+        // Make a temporary array to store all the photos that match the header
+        NSMutableArray *photosInSection = [NSMutableArray new];
+
+        for (Photo *photo in self.photos) {
+            if (self.photoSort == PhotoSortSubject) {
+                if ([photo.subject isEqual:sectionHeader]) {
+                    [photosInSection addObject:photo];
+                }
+            } else if (self.photoSort == PhotoSortLocation) {
+                if ([photo.location isEqual:sectionHeader]) {
+                    [photosInSection addObject:photo];
+                }
+            }
+        }
+        
+        [self.photosForSectionHeader setObject:photosInSection forKey:sectionHeader];
+    }
+    
+    
+    NSLog(@"%@", self.photosForSectionHeader);
+}
+
+
+#pragma mark - Collection View
+
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    PhotoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"photoCell" forIndexPath:indexPath];
+    
+    NSArray *photoArrayForSection = [self.photosForSectionHeader objectForKey:self.sectionHeaders[indexPath.section]];
+    
+    Photo *photoForIndex = photoArrayForSection[indexPath.row];
+    
+    cell.imageView.image = [UIImage imageNamed:photoForIndex.imageName];
+    
+    return cell;
+}
+
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    NSString *sectionName = self.sectionHeaders[section];
+    
+    NSArray *arrayOfPhotosForSectionName = [self.photosForSectionHeader objectForKey:sectionName];
+    
+    return arrayOfPhotosForSectionName.count;
+}
+
+-(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return self.sectionHeaders.count;
+}
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionReusableView *reusableview = nil;
+    
+    if (kind == UICollectionElementKindSectionHeader) {
+        
+        PhotoSectionHeader *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"photoSectionHeader" forIndexPath:indexPath];
+        
+        headerView.sectionHeaderLabel.text = self.sectionHeaders[indexPath.section];
+        
+        reusableview = headerView;
+    }
+    
+    /*
+    if (kind == UICollectionElementKindSectionFooter) {
+        UICollectionReusableView *footerview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"photoSectionFooter" forIndexPath:indexPath];
+        
+        reusableview = footerview;
+    }
+     */
+    
+    return reusableview;
+}
+
+
+#pragma mark - Load data
+
+-(void)loadSamplePhotos {
+    
     Photo *photo1 = [Photo new];
     photo1.imageName = @"australia";
     photo1.subject = @"Travel";
     photo1.location = @"Australia";
-
+    
     Photo *photo2 = [Photo new];
     photo2.imageName = @"bridge";
     photo2.subject = @"Hiking";
@@ -110,140 +251,6 @@ typedef enum {
     photo13.location = @"Philadelphia";
     
     self.photos = @[photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo10, photo11, photo12, photo13];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - Actions
-
-- (IBAction)updatePhotoSort:(id)sender {
-    if (self.photoSortSegmentedControl.selectedSegmentIndex == 0) {
-        self.photoSort = PhotoSortSubject;
-    } else if (self.photoSortSegmentedControl.selectedSegmentIndex == 1) {
-        self.photoSort = PhotoSortLocation;
-    }
-    
-    [self.collectionView reloadData];
-}
-
-
-#pragma mark - Collection View
-
--(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    PhotoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"photoCell" forIndexPath:indexPath];
-    
-    NSString *sectionNameOfIndex = self.sections[indexPath.section];
-    
-    NSInteger counter = 0;
-    Photo *photoAtCurrentIndex;
-    for (Photo *photo in self.photos) {
-        
-        if (self.photoSort == PhotoSortSubject) {
-            if ([photo.subject isEqual:sectionNameOfIndex]) {
-                if (counter == indexPath.row) {
-                    photoAtCurrentIndex = photo;
-                }
-                
-                counter++;
-            }
-        } else if (self.photoSort == PhotoSortLocation) {
-            if ([photo.location isEqual:sectionNameOfIndex]) {
-                if (counter == indexPath.row) {
-                    photoAtCurrentIndex = photo;
-                }
-                
-                counter++;
-            }
-        }
-        
-    }
-    
-    //Photo *photo = self.photos[indexPath.row];
-    
-    cell.imageView.image = [UIImage imageNamed:photoAtCurrentIndex.imageName];
-    
-    return cell;
-}
-
--(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    NSString *sectionNameToTest = self.sections[section];
-    
-    NSLog(@"sectionNameToTest: %@", sectionNameToTest);
-    
-    NSInteger numOfPhotosInSection = 0;
-    
-    for (Photo *photo in self.photos) {
-        
-        NSString *sectionName;
-        
-        if (self.photoSort == PhotoSortSubject) {
-            sectionName = photo.subject;
-        } else if (self.photoSort == PhotoSortLocation) {
-            sectionName = photo.location;
-        }
-        
-        if ([sectionName isEqual:sectionNameToTest]) {
-            // The section name to test
-            // is equal to the current photo's sectionName - example: travel (if a subject) OR Australia (if a location)
-            numOfPhotosInSection++;
-        }
-    }
-    
-    NSLog(@"Number of photos in section: %li", numOfPhotosInSection);
-    
-    return numOfPhotosInSection;
-}
-
--(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    
-    self.sections = [NSMutableArray new];
-    for (Photo *photo in self.photos) {
-        
-        NSString *sectionName;
-        
-        if (self.photoSort == PhotoSortSubject) {
-            sectionName = photo.subject;
-        } else if (self.photoSort == PhotoSortLocation) {
-            sectionName = photo.location;
-        }
-        
-        if (![self.sections containsObject:sectionName]) {
-            // The section is not yet recorded in the array
-            [self.sections addObject:sectionName];
-        }
-    }
-    
-    NSLog(@"Number of sections: %li", self.sections.count);
-    NSLog(@"\n");
-    
-    return self.sections.count;
-}
-
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{
-    UICollectionReusableView *reusableview = nil;
-    
-    if (kind == UICollectionElementKindSectionHeader) {
-        
-        PhotoSectionHeader *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"photoSectionHeader" forIndexPath:indexPath];
-        
-        headerView.sectionHeaderLabel.text = self.sections[indexPath.section];
-        
-        reusableview = headerView;
-    }
-    
-    /*
-    if (kind == UICollectionElementKindSectionFooter) {
-        UICollectionReusableView *footerview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"photoSectionFooter" forIndexPath:indexPath];
-        
-        reusableview = footerview;
-    }
-     */
-    
-    return reusableview;
 }
 
 @end
