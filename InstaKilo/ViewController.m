@@ -21,10 +21,16 @@ typedef enum {
 //@property (nonatomic, strong) NSArray *imageNames;
 //@property (nonatomic, strong) NSDictionary *imagesToProperties;
 
+
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+
 @property (nonatomic, strong) NSArray *photos;
 @property (nonatomic, strong) NSMutableArray *sections;
 
 @property (nonatomic) PhotoSort photoSort; // How the photos are currently sorted on screen (either by subject or location)
+
+
+@property (weak, nonatomic) IBOutlet UISegmentedControl *photoSortSegmentedControl;
 
 
 @end
@@ -35,72 +41,72 @@ typedef enum {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    self.photoSort = PhotoSortLocation;
+    [self updatePhotoSort:self];
     
     // TODO: Seperate out into new method (setupPhotoData:)
     Photo *photo1 = [Photo new];
     photo1.imageName = @"australia";
-    photo1.subject = @"travel";
+    photo1.subject = @"Travel";
     photo1.location = @"Australia";
 
     Photo *photo2 = [Photo new];
     photo2.imageName = @"bridge";
-    photo2.subject = @"hiking";
+    photo2.subject = @"Hiking";
     photo2.location = @"Philadelphia";
     
     Photo *photo3 = [Photo new];
     photo3.imageName = @"california";
-    photo3.subject = @"travel";
+    photo3.subject = @"Travel";
     photo3.location = @"California";
     
     Photo *photo4 = [Photo new];
     photo4.imageName = @"california2";
-    photo4.subject = @"travel";
+    photo4.subject = @"Travel";
     photo4.location = @"California";
     
     Photo *photo5 = [Photo new];
     photo5.imageName = @"california3";
-    photo5.subject = @"travel";
+    photo5.subject = @"Travel";
     photo5.location = @"California";
     
     Photo *photo6 = [Photo new];
     photo6.imageName = @"california4";
-    photo6.subject = @"travel";
+    photo6.subject = @"Travel";
     photo6.location = @"California";
     
     Photo *photo7 = [Photo new];
     photo7.imageName = @"cat";
-    photo7.subject = @"animal";
+    photo7.subject = @"Animal";
     photo7.location = @"The Internet";
     
     Photo *photo8 = [Photo new];
     photo8.imageName = @"cat2";
-    photo8.subject = @"animal";
+    photo8.subject = @"Animal";
     photo8.location = @"The Internet";
     
     Photo *photo9 = [Photo new];
     photo9.imageName = @"coast";
-    photo9.subject = @"travel";
+    photo9.subject = @"Travel";
     photo9.location = @"Oregon";
     
     Photo *photo10 = [Photo new];
     photo10.imageName = @"forest";
-    photo10.subject = @"hiking";
+    photo10.subject = @"Hiking";
     photo10.location = @"Philadelphia";
     
     Photo *photo11 = [Photo new];
     photo11.imageName = @"park";
-    photo11.subject = @"hiking";
+    photo11.subject = @"Hiking";
     photo11.location = @"Philadelphia";
     
     Photo *photo12 = [Photo new];
     photo12.imageName = @"waiting";
-    photo12.subject = @"animal";
+    photo12.subject = @"Animal";
     photo12.location = @"The Internet";
     
     Photo *photo13 = [Photo new];
     photo13.imageName = @"winter";
-    photo13.subject = @"weather";
+    photo13.subject = @"Weather";
     photo13.location = @"Philadelphia";
     
     self.photos = @[photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo10, photo11, photo12, photo13];
@@ -110,6 +116,19 @@ typedef enum {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - Actions
+
+- (IBAction)updatePhotoSort:(id)sender {
+    if (self.photoSortSegmentedControl.selectedSegmentIndex == 0) {
+        self.photoSort = PhotoSortSubject;
+    } else if (self.photoSortSegmentedControl.selectedSegmentIndex == 1) {
+        self.photoSort = PhotoSortLocation;
+    }
+    
+    [self.collectionView reloadData];
+}
+
 
 #pragma mark - Collection View
 
@@ -216,11 +235,13 @@ typedef enum {
         reusableview = headerView;
     }
     
-//    if (kind == UICollectionElementKindSectionFooter) {
-//        UICollectionReusableView *footerview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
-//        
-//        reusableview = footerview;
-//    }
+    /*
+    if (kind == UICollectionElementKindSectionFooter) {
+        UICollectionReusableView *footerview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"photoSectionFooter" forIndexPath:indexPath];
+        
+        reusableview = footerview;
+    }
+     */
     
     return reusableview;
 }
