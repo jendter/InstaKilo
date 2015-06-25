@@ -10,6 +10,8 @@
 
 @interface Photo : NSObject
 
-//@property (strong, nonatomic) NS
+@property (strong, nonatomic) NSString *imageName;
+@property (strong, nonatomic) NSString *subject;
+@property (strong, nonatomic) NSString *location;
 
 @end

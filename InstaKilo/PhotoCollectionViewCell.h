@@ -12,6 +12,8 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
-@property (strong, nonatomic) NSString *subject;
+
+
+//@property (strong, nonatomic) NSString *subject;
 
 @end
