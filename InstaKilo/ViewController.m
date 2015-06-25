@@ -35,7 +35,7 @@ typedef enum {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    self.photoSort = PhotoSortSubject;
+    self.photoSort = PhotoSortLocation;
     
     // TODO: Seperate out into new method (setupPhotoData:)
     Photo *photo1 = [Photo new];
@@ -46,57 +46,57 @@ typedef enum {
     Photo *photo2 = [Photo new];
     photo2.imageName = @"bridge";
     photo2.subject = @"hiking";
-    photo2.location = @"Australia";
+    photo2.location = @"Philadelphia";
     
     Photo *photo3 = [Photo new];
     photo3.imageName = @"california";
     photo3.subject = @"travel";
-    photo3.location = @"Australia";
+    photo3.location = @"California";
     
     Photo *photo4 = [Photo new];
     photo4.imageName = @"california2";
     photo4.subject = @"travel";
-    photo4.location = @"Australia";
+    photo4.location = @"California";
     
     Photo *photo5 = [Photo new];
     photo5.imageName = @"california3";
     photo5.subject = @"travel";
-    photo5.location = @"Australia";
+    photo5.location = @"California";
     
     Photo *photo6 = [Photo new];
     photo6.imageName = @"california4";
     photo6.subject = @"travel";
-    photo6.location = @"Australia";
+    photo6.location = @"California";
     
     Photo *photo7 = [Photo new];
     photo7.imageName = @"cat";
     photo7.subject = @"animal";
-    photo7.location = @"Australia";
+    photo7.location = @"The Internet";
     
     Photo *photo8 = [Photo new];
     photo8.imageName = @"cat2";
     photo8.subject = @"animal";
-    photo8.location = @"Australia";
+    photo8.location = @"The Internet";
     
     Photo *photo9 = [Photo new];
     photo9.imageName = @"coast";
     photo9.subject = @"travel";
-    photo9.location = @"Australia";
+    photo9.location = @"Oregon";
     
     Photo *photo10 = [Photo new];
     photo10.imageName = @"forest";
     photo10.subject = @"hiking";
-    photo10.location = @"Australia";
+    photo10.location = @"Philadelphia";
     
     Photo *photo11 = [Photo new];
     photo11.imageName = @"park";
     photo11.subject = @"hiking";
-    photo11.location = @"Australia";
+    photo11.location = @"Philadelphia";
     
     Photo *photo12 = [Photo new];
     photo12.imageName = @"waiting";
     photo12.subject = @"animal";
-    photo12.location = @"Australia";
+    photo12.location = @"The Internet";
     
     Photo *photo13 = [Photo new];
     photo13.imageName = @"winter";
