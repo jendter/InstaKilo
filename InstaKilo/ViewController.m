@@ -18,9 +18,6 @@ typedef enum {
 
 @interface ViewController ()
 
-//@property (nonatomic, strong) NSArray *imageNames;
-//@property (nonatomic, strong) NSDictionary *imagesToProperties;
-
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
@@ -41,18 +38,12 @@ typedef enum {
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-
-     self.photoSort = PhotoSortSubject; // DEBUGGING HARDCODE
     
     [self loadSamplePhotos];
     
-    [self updatePhotoData];
+    [self updatePhotoSort:self];    // Triggers a reload, the same way pressing the segmented control in the nav bar would.
+                                    // Keeps the segmented control default and the view in sync.
     
-    
-}
-
--(void)viewWillAppear:(BOOL)animated {
-    //[self.collectionView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -74,10 +65,6 @@ typedef enum {
 
     [self.collectionView reloadData];
 }
-
-//-(void)updatePhotoDataForPhotoSort:(PhotoSort)photoSort {
-//    
-//}
 
 -(void)updatePhotoData {
     
